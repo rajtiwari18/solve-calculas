@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Solver — LaTeX Edition</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculus Solver</h1>
+            <p class="subtitle">LaTeX-powered symbolic computation</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="operation-tabs">
+                    <button class="tab active" data-op="diff">Differentiate</button>
+                    <button class="tab" data-op="integ">Integrate</button>
+                    <button class="tab" data-op="limit">Limit</button>
+                    <button class="tab" data-op="taylor">Taylor</button>
+                    <button class="tab" data-op="ode">ODE</button>
+                    <button class="tab" data-op="simplify">Simplify</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="expression">Expression</label>
+                    <input type="text" id="expression" placeholder="e.g. sin(x) * x**2" autofocus>
+                    <div class="expr-preview" id="expr-preview"></div>
+                </div>
+
+                <div class="params" id="params-diff">
+                    <div class="form-group">
+                        <label for="diff-var">Variable</label>
+                        <input type="text" id="diff-var" value="x" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="diff-order">Order</label>
+                        <input type="number" id="diff-order" value="1" min="1" max="10" class="small-input">
+                    </div>
+                </div>
+
+                <div class="params hidden" id="params-integ">
+                    <div class="form-group">
+                        <label for="integ-var">Variable</label>
+                        <input type="text" id="integ-var" value="x" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="integ-definite"> Definite integral
+                        </label>
+                    </div>
+                    <div class="form-group" id="integ-bounds" style="display:none">
+                        <label for="integ-lower">Lower bound</label>
+                        <input type="text" id="integ-lower" value="0" class="small-input">
+                        <label for="integ-upper">Upper bound</label>
+                        <input type="text" id="integ-upper" value="pi" class="small-input">
+                    </div>
+                </div>
+
+                <div class="params hidden" id="params-limit">
+                    <div class="form-group">
+                        <label for="limit-var">Variable</label>
+                        <input type="text" id="limit-var" value="x" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="limit-point">Point</label>
+                        <input type="text" id="limit-point" value="0" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="limit-dir">Direction</label>
+                        <select id="limit-dir" class="small-input">
+                            <option value="=">Both (auto)</option>
+                            <option value="+">From +</option>
+                            <option value="-">From -</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="params hidden" id="params-taylor">
+                    <div class="form-group">
+                        <label for="taylor-var">Variable</label>
+                        <input type="text" id="taylor-var" value="x" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="taylor-point">Expand around</label>
+                        <input type="text" id="taylor-point" value="0" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="taylor-order">Order</label>
+                        <input type="number" id="taylor-order" value="6" min="1" max="20" class="small-input">
+                    </div>
+                </div>
+
+                <div class="params hidden" id="params-ode">
+                    <div class="form-group">
+                        <label for="ode-func">Function name</label>
+                        <input type="text" id="ode-func" value="y" class="small-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="ode-var">Independent var</label>
+                        <input type="text" id="ode-var" value="x" class="small-input">
+                    </div>
+                </div>
+
+                <div class="params hidden" id="params-simplify">
+                    <p class="hint">Enter any expression to simplify</p>
+                </div>
+
+                <button id="solve-btn" class="solve-button">Solve</button>
+            </div>
+
+            <div class="result-section" id="result-section" style="display:none">
+                <div class="result-card">
+                    <h3>Input</h3>
+                    <div class="latex-display" id="result-input"></div>
+                </div>
+                <div class="result-card result-main">
+                    <h3>Result</h3>
+                    <div class="latex-display large" id="result-output"></div>
+                </div>
+                <div class="result-card">
+                    <h3>LaTeX Source</h3>
+                    <pre id="latex-source" class="code-block"></pre>
+                    <button id="copy-btn" class="copy-button">Copy LaTeX</button>
+                </div>
+            </div>
+
+            <div class="error-section" id="error-section" style="display:none">
+                <div class="error-card">
+                    <span class="error-icon">!</span>
+                    <span id="error-msg"></span>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Built with SymPy + Flask + KaTeX</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
